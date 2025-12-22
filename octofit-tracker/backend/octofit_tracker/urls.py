@@ -29,4 +29,15 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('', views.api_root, name='api-root'),
+    # API endpoint URLs info (for codespace)
+    path('api/endpoints/', lambda request: __import__('django.http').http.JsonResponse({
+        'users': f"https://{os.environ.get('CODESPACE_NAME', 'localhost')}-8000.app.github.dev/api/users/",
+        'teams': f"https://{os.environ.get('CODESPACE_NAME', 'localhost')}-8000.app.github.dev/api/teams/",
+        'activities': f"https://{os.environ.get('CODESPACE_NAME', 'localhost')}-8000.app.github.dev/api/activities/",
+        'leaderboard': f"https://{os.environ.get('CODESPACE_NAME', 'localhost')}-8000.app.github.dev/api/leaderboard/",
+        'workouts': f"https://{os.environ.get('CODESPACE_NAME', 'localhost')}-8000.app.github.dev/api/workouts/",
+        'note': 'If you get HTTPS certificate errors, use --insecure with curl.'
+    }), name='api-endpoints'),
 ]
+
+import os
